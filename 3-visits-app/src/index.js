@@ -2,23 +2,58 @@ const express = require("express");
 const redis = require("redis");
 
 const app = express();
-const client = redis.createClient();
+const client = redis.createClient({
+  /* NOTE: 
+    Generally host is connection url 
+    but docker has cool feature to reference service name from the docker-compose.yml
+   */
+  socket: {
+    host: "redis-server",
+    port: 6379,
+  },
+});
+
 const initialNumberOfVisits = 0;
 
-client.set("visits", initialNumberOfVisits);
+// Make sure to connect redis
+client.on("error", (err) => console.log("Redis Client Error", err));
 
-app.get("/", (req, res) => {
-  client.get("visits", (err, visits) => {
-    if (err) {
-      res.send("Database is down, sorry unable to fetch total number of visits");
+const connectWithRetry = async () => {
+  try {
+    await client.connect();
+    console.log("Connected to Redis");
+
+    // Initialize visits counter AFTER connection is established
+    const existingVisits = await client.get("visits");
+    if (existingVisits === null) {
+      await client.set("visits", initialNumberOfVisits);
+      console.log("Initialized visits counter");
     }
+  } catch (err) {
+    console.log("Redis connection failed, retrying in 5 seconds...");
+    setTimeout(connectWithRetry, 5000);
+  }
+};
 
+connectWithRetry();
+
+// Use async/await consistently instead of mixing with callbacks
+app.get("/", async (req, res) => {
+  try {
+    // Get current visits count
+    const visits = await client.get("visits");
+
+    // Send response with current count
     res.send("Total number of visits is " + visits);
 
-    client.set("visits", parseInt(visits) + 1);
-  });
+    // Increment visits counter
+    await client.set("visits", parseInt(visits) + 1);
+  } catch (err) {
+    console.error("Redis error:", err);
+    res.send("Database is down, sorry unable to fetch total number of visits");
+  }
 });
 
 app.listen(8081, () => {
-  console.log("Listening on port 8081");
+  console.log("App server started");
 });

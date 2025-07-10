@@ -1,10 +1,12 @@
-version: "3.8"
-
 services:
   redis-server:
-    image: redis
+    image: redis:alpine
+    restart: unless-stopped
 
   visits-app:
     build: .
     ports:
       - "3000:8081"
+    depends_on:
+      - redis-server
+    restart: unless-stopped
