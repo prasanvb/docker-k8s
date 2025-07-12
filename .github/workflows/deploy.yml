@@ -9,10 +9,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Docker Hub, create image and run tests
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: docker build -t 4-react-app-test:latest -f Dockerfile.dev .
-      - run: docker run -e CI=true 4-react-app-test:latest npm test
+
+      - name: Build Docker Image
+        run: docker build -t 4-react-app-test:latest -f Dockerfile.dev .
+
+      - name: Run Tests
+        run: docker run -e CI=true 4-react-app-test:latest npm test
