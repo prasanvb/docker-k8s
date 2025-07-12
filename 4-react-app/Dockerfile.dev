@@ -11,6 +11,7 @@ COPY ./package.json .
 RUN npm install
 
 # copy all folders and file from host directory to working directory
+# NOTE: If we are using volume mapping this step is redundant, but its required for prod deployment
 COPY . .
 
 # Default startup command when it starts as container
