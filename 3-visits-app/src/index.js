@@ -3,14 +3,15 @@ const redis = require("redis");
 
 const app = express();
 const client = redis.createClient({
-  /* NOTE: 
-    Generally host is connection url 
-    but docker has cool feature to reference service name from the docker-compose.yml
+  url: "redis://redis-server:6379",
+  /* NOTE: Docker has cool feature to reference service name from the docker-compose.yml in the connection url
    */
-  socket: {
-    host: "redis-server",
-    port: 6379,
-  },
+
+  // redis v4+ requires explicit socket configuration
+  // socket: {
+  //   host: "redis-server",
+  //   port: 6379,
+  // },
 });
 
 const initialNumberOfVisits = 0;
@@ -37,7 +38,6 @@ const connectWithRetry = async () => {
 
 connectWithRetry();
 
-// Use async/await consistently instead of mixing with callbacks
 app.get("/", async (req, res) => {
   try {
     // Get current visits count
