@@ -14,6 +14,8 @@ services:
 
   # test server
   test:
+    #  container will have an interactive terminal session, which is useful for running processes that expect to be attached to a terminal, such as development servers or debugging tools.
+    # tty: true
     build:
       context: .
       dockerfile: Dockerfile.dev

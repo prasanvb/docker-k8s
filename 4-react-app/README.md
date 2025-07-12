@@ -3,7 +3,11 @@
 - Sample app for creating production grade CI/CD pipeline using GitHub, Travis and AWS.
 - Separate service in docker compose for development and testing
 - Separate build process (dockerfile) for development and production.
-- Production dockerfile use multi-step build process with a build phase and run phase
+- Production [dockerfile](4-react-app/Dockerfile) use multi-step build process with 2 separate phases build phase and run phase
+  - In the build stage we create a build artifacts
+  - In the run stage we copy over build artifacts to host it on a ngnix server
+
+## Manually running each docker container
 
 1. Nav to project
    `repos/docker-k8s/4-react-ap`
@@ -27,3 +31,25 @@
    (or)
 
    `docker exec -it [containerId] npm run test` to run test inside a currently running container that has volume mapping enabled
+
+## Running multiple docker container using docker compose
+
+1. Nav to project
+   `repos/docker-k8s/4-react-ap`
+
+2. Build an image and run container
+   `docker compose up --build`
+
+3. View running container
+   `docker ps`
+
+4. Stop all running containers
+   `docker compose down`
+
+## Production build process
+
+- Create prod build artifact
+  `docker build . -t prasanv/prod-build-artifact:v1`
+
+- Start ngnix server
+  `docker run -p 8080:80 prasanv/prod-build-artifact:v1`
