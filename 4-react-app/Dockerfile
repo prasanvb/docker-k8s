@@ -12,6 +12,7 @@ COPY . .
 RUN npm run build
 
 # Run stage: Copy build artifacts from build stage and create a
+# Default ngnix port 80
 FROM nginx:1.29.0-alpine-slim
 
 #PORT MAPPING automatically done by AWS

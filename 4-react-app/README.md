@@ -51,5 +51,5 @@
 - Create prod build artifact
   `docker build . -t prasanv/prod-build-artifact:v1`
 
-- Start ngnix server
-  `docker run -p 8080:80 prasanv/prod-build-artifact:v1`
+- Start ngnix server, default ngnix port 80
+  `docker run -p 80:80 prasanv/prod-build-artifact:v1`
