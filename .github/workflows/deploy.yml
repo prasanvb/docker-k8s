@@ -26,4 +26,4 @@ jobs:
         run: docker run -e CI=true prasanvb/4-react-app-test npm test
 
       - name: Generate deployment package
-        run: zip -r deploy.zip ./4-react-app -x '*.git*'
+        run: zip deploy.zip -r ./4-react-app -x '*.git*'
