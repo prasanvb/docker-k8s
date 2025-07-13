@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    # environment name from git hub
     environment: prod-deploy
     runs-on: ubuntu-latest
     steps:
@@ -22,8 +23,20 @@ jobs:
       - name: Build Docker Image
         run: docker build -t prasanvb/4-react-app-test -f 4-react-app/Dockerfile.dev ./4-react-app
 
-      - name: Run Tests
+      - name: Run container and execute tests
         run: docker run -e CI=true prasanvb/4-react-app-test npm test
 
-      - name: Generate deployment package
+      - name: Generate deployment zip package
         run: zip deploy.zip -r ./4-react-app -x '*.git*'
+
+      - name: Deploy to AWS Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v18
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: 4-react-app
+          environment_name: 4-react-app-prod-env
+          existing_bucket_name: elasticbeanstalk-us-west-2-980921714626
+          region: us-west-2
+          version_label: ${{ github.sha }}
+          deployment_package: deploy.zip
