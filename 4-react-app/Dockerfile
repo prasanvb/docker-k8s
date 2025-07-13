@@ -14,6 +14,9 @@ RUN npm run build
 # Run stage: Copy build artifacts from build stage and create a
 FROM nginx:1.29.0-alpine-slim
 
+#PORT MAPPING automatically done by AWS
+EXPOSE 80
+
 # copy build artifacts from build stage to a specific ngnix folder as mentioned in docs
 COPY --from=builder /app/build /usr/share/nginx/html
 
