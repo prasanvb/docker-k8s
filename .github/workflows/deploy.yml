@@ -26,8 +26,14 @@ jobs:
       # - name: Run container and execute tests
       #   run: docker run -e CI=true prasanvb/4-react-app-test npm test
 
+      - name: Install dependencies
+        run: cd 4-react-app && npm install
+
+      - name: Build React app
+        run: cd 4-react-app && npm run build
+
       - name: Generate deployment zip package
-        run: cd 4-react-app && zip -r deploy.zip . -x '*.git*'
+        run: cd 4-react-app && zip -r ../deploy.zip build Dockerfile package.json -x '*.git*'
 
       - name: Deploy to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v18
