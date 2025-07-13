@@ -33,7 +33,7 @@ jobs:
         run: cd 4-react-app && npm run build
 
       - name: Generate deployment zip package
-        run: cd 4-react-app && zip -r ../deploy.zip build Dockerfile package.json -x '*.git*'
+        run: cd 4-react-app && zip -r ../deploy.zip . -x '*.git*'
 
       - name: Deploy to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v18
