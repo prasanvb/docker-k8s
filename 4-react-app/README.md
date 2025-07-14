@@ -53,3 +53,14 @@
 
 - Start ngnix server, default ngnix port 80
   `docker run -p 80:80 prasanv/prod-build-artifact:v1`
+
+## Accessing build artifacts inside EC2
+
+- Make sure EC2 security groups allow HTTP and SSH inbound rules
+- Connect to EC2 instance and view the build artifacts
+
+  ```bash
+  cd /var/app/current
+  ls -lah
+
+  ```
