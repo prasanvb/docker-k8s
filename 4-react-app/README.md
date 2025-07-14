@@ -56,7 +56,7 @@
 
 ## Accessing build artifacts inside EC2
 
-- Make sure EC2 security groups allow HTTP and SSH inbound rules
+- Make sure EC2 security groups allow SSH inbound rules to access the terminal
 - Connect to EC2 instance and view the build artifacts
 
   ```bash
