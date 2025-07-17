@@ -20,6 +20,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      #
+      #- name: Run tests
+
       #The Dockerfile will handle the build and install steps inside the container on AWS. The workflow just needs to package the app directory (with Dockerfile at the root) and deploy.
 
       - name: Generate deployment zip package
