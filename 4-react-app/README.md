@@ -48,19 +48,15 @@
 
 ## Production build process
 
-- Create prod build artifact
-  `docker build . -t prasanv/prod-build-artifact:v1`
-
-- Start ngnix server, default ngnix port 80
-  `docker run -p 80:80 prasanv/prod-build-artifact:v1`
-
-## Accessing build artifacts inside EC2
+### Accessing build artifacts inside EC2
 
 - Make sure EC2 security groups allow SSH inbound rules to access the terminal
-- Connect to EC2 instance and view the build artifacts
+- Connect to EC2 instance and perform
+  - Check the running container
+  - Attach a shell terminal to container, to view the build artifacts
 
-  ```bash
-  cd /var/app/current
-  ls -lah
+### AWS Elastic Beanstalk web server environment using a managed Docker platform
 
-  ```
+- Upload a `.zip` file (either via AWS Console, CLI, or CI/CD) to a Beanstalk application environment
+- Elastic Beanstalk, Detects `Dockerfile`, builds a Docker image from it (i.e.`docker build -t app .`) and then runs that image (i.e. `docker run`) as a container inside an EC2 instance.
+- Elastic Beanstalk manages the EC2 instances, load balancer, networking, logs, scaling, etc.

@@ -1,4 +1,4 @@
-# Build stage: creates build artifacts under /app/build
+# IMPORTANT: Build stage: creates build artifacts under /app/build
 FROM node:alpine3.22 AS builder
 
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY . .
 
 RUN npm run build
 
-# Run stage: Copy build artifacts from build stage and create a
+# IMPORTANT: Run stage: Copy build artifacts from build stage and create a
 # Default ngnix port 80
 FROM nginx:1.29.0-alpine-slim
 
