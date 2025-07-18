@@ -20,10 +20,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      #
-      #- name: Run tests
+      # Add step run test later
 
-      #The Dockerfile will handle the build and install steps inside the container on AWS. The workflow just needs to package the app directory (with Dockerfile at the root) and deploy.
+      #NOTE: The Dockerfile will handle the build and install steps inside the container on AWS. The workflow just needs to package the app directory (with Dockerfile at the root) and deploy.
 
       - name: Generate deployment zip package
         run: cd 4-react-app && zip -r ../deploy.zip . -x '*.git*' 'node_modules/*'
