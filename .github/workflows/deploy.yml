@@ -21,6 +21,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Add step run test later
+      - name: Build Docker Image
+        run: docker build -t prasanvb/4-react-app-test -f 4-react-app/Dockerfile.dev ./4-react-app
+
+      - name: Run container and execute tests
+        run: docker run -e CI=true prasanvb/4-react-app-test npm test
 
       #NOTE: The Dockerfile will handle the build and install steps inside the container on AWS. The workflow just needs to package the app directory (with Dockerfile at the root) and deploy.
 
